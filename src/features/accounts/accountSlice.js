@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
@@ -34,10 +34,17 @@ export default function accountReducer(state = initialState, action) {
           ...state,
         };
       }
-
+    case "account/resetAccount":
+      return { ...initialState };
     default:
       return state;
   }
+}
+
+export function resetAccount() {
+  return {
+    type: "account/resetAccount",
+  };
 }
 
 export function requestLoan(amount, purpose) {
