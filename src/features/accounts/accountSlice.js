@@ -8,7 +8,7 @@ export const initialState = {
 export default function accountReducer(state = initialState, action) {
   switch (action.type) {
     case "account/deposit":
-      return { ...state, balance: state.balance + action.payload };
+      return { ...state, balance: state.balance + Number(action.payload) };
     case "account/withdraw":
       return { ...state, balance: state.balance - action.payload };
     case "account/requestLoan":
@@ -62,9 +62,34 @@ export function withdraw(amount) {
 }
 
 export function deposit(amount, currency) {
-  return {
-    type: "account/deposit",
-    payload: amount,
+  if (currency === "USD") {
+    return {
+      type: "account/deposit",
+      payload: amount,
+    };
+  }
+  return async function (dispatch, getState) {
+    try {
+      // API CALL
+      const res = await fetch(
+        `https://api.frankfurter.dev/v1/latest?base=${currency}&symbols=USD`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch exchange rates.");
+      }
+      const data = await res.json();
+      const convertedAmount = (amount * data.rates["USD"]).toFixed(2);
+      console.log(convertedAmount);
+
+      // return action
+      dispatch({
+        type: "account/deposit",
+        payload: convertedAmount,
+      });
+    } catch (error) {
+      console.error("Error in deposit action:", error);
+      // Optionally, dispatch a failure action to update state
+    }
   };
 }
 

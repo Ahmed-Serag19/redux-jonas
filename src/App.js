@@ -5,8 +5,7 @@ import BalanceDisplay from "./features/accounts/BalanceDisplay";
 import { useSelector } from "react-redux";
 function App() {
   const customer = useSelector((store) => store.customer);
-  console.log(customer.fullName);
-  console.log(customer.nationalID);
+
   return (
     <div>
       <h1>🏦 The React-Redux Bank ⚛️</h1>
