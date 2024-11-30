@@ -61,7 +61,7 @@ export function withdraw(amount) {
   };
 }
 
-export function deposit(amount) {
+export function deposit(amount, currency) {
   return {
     type: "account/deposit",
     payload: amount,
