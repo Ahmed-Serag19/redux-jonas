@@ -82,6 +82,7 @@ export function deposit(amount, currency) {
       console.log(convertedAmount);
 
       // return action
+
       dispatch({
         type: "account/deposit",
         payload: convertedAmount,
