@@ -13,7 +13,7 @@ function Customer() {
     dispatch(createCustomer(fullName, nationalId));
     setFullName("");
     setNationalId("");
-    // dispatch(resetAccount());
+    dispatch(resetAccount());
   }
 
   return (
