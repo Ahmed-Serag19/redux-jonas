@@ -139,7 +139,36 @@ const accountSlice = createSlice({
     },
   },
 });
-export const { deposit, withdraw, requestLoan, payLoan, resetAccount } =
+export const { withdraw, requestLoan, payLoan, resetAccount } =
   accountSlice.actions;
+
+export function deposit(amount, currency) {
+  if (currency === "USD") {
+    return {
+      type: "account/deposit",
+      payload: amount,
+    };
+  }
+  return async function (dispatch, getState) {
+    try {
+      const res = await fetch(
+        `https://api.frankfurter.dev/v1/latest?base=${currency}&symbols=USD`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch exchange rates.");
+      }
+      const data = await res.json();
+      const convertedAmount = (amount * data.rates["USD"]).toFixed(2);
+      console.log(convertedAmount);
+
+      dispatch({
+        type: "account/deposit",
+        payload: Number(convertedAmount),
+      });
+    } catch (error) {
+      console.error("Error in deposit action:", error);
+    }
+  };
+}
 
 export default accountSlice.reducer;

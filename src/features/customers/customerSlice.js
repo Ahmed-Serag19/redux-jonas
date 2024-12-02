@@ -40,13 +40,17 @@ const customerSlice = createSlice({
     createCustomer: {
       prepare(fullName, nationalID) {
         return {
-          payload: { fullName, nationalID, createdAt },
+          payload: {
+            fullName,
+            nationalID,
+            createdAt: new Date().toISOString(),
+          },
         };
       },
       reducer(state, action) {
         state.fullName = action.payload.fullName;
         state.nationalID = action.payload.nationalID;
-        state.createdAt = new Date().toISOString();
+        state.createdAt = action.payload.createdAt;
       },
     },
     updateName(state, action) {

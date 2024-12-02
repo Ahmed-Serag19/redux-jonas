@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
 
 function AccountOperations() {
@@ -34,7 +34,7 @@ function AccountOperations() {
   function handlePayLoan() {
     dispatch(payLoan());
   }
-
+  const account = useSelector((state) => state.account);
   return (
     <div>
       <h2>Your account operations</h2>
@@ -87,8 +87,10 @@ function AccountOperations() {
         </div>
 
         <div>
-          <span>Pay back $X</span>
-          <button onClick={handlePayLoan}>Pay loan</button>
+          Pay back<span style={{ color: "red" }}> ${account.loan}</span>
+          <button style={{ marginLeft: "10px" }} onClick={handlePayLoan}>
+            Pay loan
+          </button>
         </div>
       </div>
     </div>
